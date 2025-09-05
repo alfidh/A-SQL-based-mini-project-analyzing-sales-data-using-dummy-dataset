@@ -26,7 +26,6 @@ This mini project demonstrates the ability to design, manage, and analyze sales 
    - `quantity`
   
 ## Key Analyses / Queries
-
 ### 1. Total Quantity & Revenue by Product
 ```sql
 SELECT p.product_name, SUM(s.quantity) AS total_quantity, SUM(p.price * s.quantity) AS total_revenue
@@ -44,13 +43,17 @@ Output:
 | Cloud Storage Basic | 14             | 3500000.000   |
 
 ---
+```
 ### 2. Profit Margin by Product
-```sql   
-SELECT p.product_name, SUM((p.price - p.product_cost) * s.quantity) AS total_profit, ROUND(AVG((p.price - p.product_cost) / p.price * 100), 2) AS avg_margin_percent
-from sales s
+```sql
+SELECT p.product_name, 
+       SUM((p.price - p.product_cost) * s.quantity) AS total_profit, 
+       ROUND(AVG((p.price - p.product_cost) / p.price * 100), 2) AS avg_margin_percent
+FROM sales s
 JOIN products p ON p.product_id = s.product_id
 GROUP BY p.product_name
 ORDER BY total_profit DESC, avg_margin_percent DESC;
+
 
 Output:
 | product_name        | total_profit | avg_margin_percent |
@@ -59,8 +62,11 @@ Output:
 | Internet Package A  | 5100000.000  | 60.00              |
 | Cloud Storage Basic | 2100000.000  | 60.00              |
 | Cloud Storage Pro   | 1400000.000  | 33.33              |
-    
+
+---
+````
 ### 3. Top 5 Customer by Profit
+```sql
 SELECT c.customer_name, SUM((p.price - p.product_cost) * s.quantity) AS total_profit
 FROM sales s
 JOIN customers c ON c.customer_id = s.customer_id
