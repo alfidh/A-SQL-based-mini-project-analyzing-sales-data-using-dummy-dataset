@@ -1,0 +1,187 @@
+**Schema (PostgreSQL v17)**
+
+    CREATE TABLE products (
+      product_id SERIAL PRIMARY KEY,
+      product_name VARCHAR(50),
+      category VARCHAR(20),
+      product_cost DECIMAL(10,3),
+      price DECIMAL(10,3),
+      competitor_price DECIMAL(10,3)
+     );
+       
+     CREATE TABLE customers (
+       customer_id SERIAL PRIMARY KEY,
+       city VARCHAR(30),
+       customer_name VARCHAR(50)
+     );
+     
+     CREATE TABLE sales (
+       sales_id SERIAL PRIMARY KEY,
+       sale_date DATE,
+       product_id INT,
+       customer_id INT,
+       quantity INT,
+       FOREIGN KEY (product_id) REFERENCES products(product_id),
+       FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+     );
+    
+       
+
+---
+
+**Query #1**
+
+    INSERT INTO products (product_name, category, product_cost, price, competitor_price) VALUES
+    ('Internet Package A', 'Telecom', 200000.000, 500000.000, 480000.000),
+    ('Internet Package B', 'Telecom', 250000.000, 580000.000, 550000.000),
+    ('Cloud Storage Basic', 'Digital Service', 100000.000, 250000.000,250000.000),
+    ('Cloud Storage Pro', 'Digital Service', 200000.000, 300000.000, 350000.000);
+
+There are no results to be displayed.
+
+---
+**Query #2**
+
+    
+    
+    
+    SELECT * FROM products;
+
+| product_id | product_name        | category        | product_cost | price      | competitor_price |
+| ---------- | ------------------- | --------------- | ------------ | ---------- | ---------------- |
+| 1          | Internet Package A  | Telecom         | 200000.000   | 500000.000 | 480000.000       |
+| 2          | Internet Package B  | Telecom         | 250000.000   | 580000.000 | 550000.000       |
+| 3          | Cloud Storage Basic | Digital Service | 100000.000   | 250000.000 | 250000.000       |
+| 4          | Cloud Storage Pro   | Digital Service | 200000.000   | 300000.000 | 350000.000       |
+
+---
+**Query #3**
+
+    
+    
+    INSERT INTO customers (city, customer_name) VALUES
+    ('Jakarta', 'PT Maju Jaya'),
+    ('Bandung', 'PT Sejahtera'),
+    ('Semarang', 'CV Sinar Jaya'),
+    ('Jakarta', 'PT Abadi'),
+    ('Bandung', 'CV Makmur');
+
+There are no results to be displayed.
+
+---
+**Query #4**
+
+    
+    
+    SELECT * FROM customers;
+
+| customer_id | city     | customer_name |
+| ----------- | -------- | ------------- |
+| 1           | Jakarta  | PT Maju Jaya  |
+| 2           | Bandung  | PT Sejahtera  |
+| 3           | Semarang | CV Sinar Jaya |
+| 4           | Jakarta  | PT Abadi      |
+| 5           | Bandung  | CV Makmur     |
+
+---
+**Query #5**
+
+    
+    
+    INSERT INTO sales (sale_date, product_id, customer_id, quantity) VALUES
+    ('2025-09-01', 1, 1, 10),
+    ('2025-09-02', 2, 2, 5),
+    ('2025-09-03', 3, 3, 8),
+    ('2025-09-04', 4, 4, 3),
+    ('2025-09-05', 2, 5, 12),
+    ('2025-09-06', 1, 3, 7),
+    ('2025-09-07', 2, 1, 4),
+    ('2025-09-08', 3, 2, 6),
+    ('2025-09-09', 4, 5, 2),
+    ('2025-09-10', 4, 4, 9);
+
+There are no results to be displayed.
+
+---
+**Query #6**
+
+    
+    
+    SELECT * from sales;
+
+| sales_id | sale_date  | product_id | customer_id | quantity |
+| -------- | ---------- | ---------- | ----------- | -------- |
+| 1        | 2025-09-01 | 1          | 1           | 10       |
+| 2        | 2025-09-02 | 2          | 2           | 5        |
+| 3        | 2025-09-03 | 3          | 3           | 8        |
+| 4        | 2025-09-04 | 4          | 4           | 3        |
+| 5        | 2025-09-05 | 2          | 5           | 12       |
+| 6        | 2025-09-06 | 1          | 3           | 7        |
+| 7        | 2025-09-07 | 2          | 1           | 4        |
+| 8        | 2025-09-08 | 3          | 2           | 6        |
+| 9        | 2025-09-09 | 4          | 5           | 2        |
+| 10       | 2025-09-10 | 4          | 4           | 9        |
+
+---
+**Query #7**
+
+    
+    
+    --Total Quantity & Revenue by Product--
+    SELECT p.product_name, SUM(s.quantity) AS total_quantity, SUM(p.price * s.quantity) AS total_revenue
+    FROM sales s
+    JOIN products p ON p.product_id = s.product_id
+    GROUP BY p.product_name
+    ORDER BY total_quantity DESC, total_revenue DESC;
+
+| product_name        | total_quantity | total_revenue |
+| ------------------- | -------------- | ------------- |
+| Internet Package B  | 21             | 12180000.000  |
+| Internet Package A  | 17             | 8500000.000   |
+| Cloud Storage Pro   | 14             | 4200000.000   |
+| Cloud Storage Basic | 14             | 3500000.000   |
+
+---
+**Query #8**
+
+    
+    
+    --Profit Margin by Product--
+    SELECT p.product_name, SUM((p.price - p.product_cost) * s.quantity) AS total_profit, ROUND(AVG((p.price - p.product_cost) / p.price * 100), 2) AS avg_margin_percent
+    from sales s
+    JOIN products p ON p.product_id = s.product_id
+    GROUP BY p.product_name
+    ORDER BY total_profit DESC, avg_margin_percent DESC;
+
+| product_name        | total_profit | avg_margin_percent |
+| ------------------- | ------------ | ------------------ |
+| Internet Package B  | 6930000.000  | 56.90              |
+| Internet Package A  | 5100000.000  | 60.00              |
+| Cloud Storage Basic | 2100000.000  | 60.00              |
+| Cloud Storage Pro   | 1400000.000  | 33.33              |
+
+---
+**Query #9**
+
+    
+    
+    --Top 5 Customer by Profit--
+    SELECT c.customer_name, SUM((p.price - p.product_cost) * s.quantity) AS total_profit
+    FROM sales s
+    JOIN customers c ON c.customer_id = s.customer_id
+    JOIN products p ON p.product_id = s.product_id
+    GROUP BY c.customer_name
+    ORDER BY total_profit DESC
+    LIMIT 5;
+
+| customer_name | total_profit |
+| ------------- | ------------ |
+| PT Maju Jaya  | 4320000.000  |
+| CV Makmur     | 4160000.000  |
+| CV Sinar Jaya | 3300000.000  |
+| PT Sejahtera  | 2550000.000  |
+| PT Abadi      | 1200000.000  |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/a72dDW4AoQDTi3Knf3xuvL/1)
