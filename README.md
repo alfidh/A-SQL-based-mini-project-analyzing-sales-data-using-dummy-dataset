@@ -10,8 +10,7 @@ This mini project demonstrates the ability to design, manage, and analyze sales 
    - `product_name`  
    - `category`  
    - `product_cost`  
-   - `price`  
-   - `competitor_price`  
+   - `price`   
 
 2. **Customers**  
    - `customer_id` (Primary Key)  
