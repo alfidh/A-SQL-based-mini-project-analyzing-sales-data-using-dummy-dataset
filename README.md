@@ -82,3 +82,24 @@ Output:
 | CV Sinar Jaya | 3300000.000  |
 | PT Sejahtera  | 2550000.000  |
 | PT Abadi      | 1200000.000  |
+---
+```
+### 4. Customer with >1 Order
+```sql
+SELECT c.customer_name, COUNT(s.sales_id) AS num_order
+FROM sales s
+JOIN customers c ON c.customer_id = s.customer_id
+GROUP BY c.customer_name
+HAVING COUNT(s.sales_id) > 1
+ORDER BY num_order DESC;
+
+Output:
+| customer_name | num_order |
+| ------------- | --------- |
+| PT Maju Jaya  | 2         |
+| PT Sejahtera  | 2         |
+| CV Makmur     | 2         |
+| PT Abadi      | 2         |
+| CV Sinar Jaya | 2         |
+
+---
