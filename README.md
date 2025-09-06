@@ -103,3 +103,28 @@ Output:
 | CV Sinar Jaya | 2         |
 
 ---
+```
+### 5. Number of Product Order by Customer
+```sql
+SELECT c.customer_name, p.product_name, SUM(s.quantity) AS total_quantity
+FROM sales s
+JOIN customers c ON c.customer_id = s.customer_id
+JOIN products p ON p.product_id = s.product_id
+GROUP BY c.customer_name, p.product_name
+ORDER BY c.customer_name, total_quantity DESC;
+
+Output:
+
+| customer_name | product_name        | total_quantity |
+| ------------- | ------------------- | -------------- |
+| CV Makmur     | Internet Package B  | 12             |
+| CV Makmur     | Cloud Storage Pro   | 2              |
+| CV Sinar Jaya | Cloud Storage Basic | 8              |
+| CV Sinar Jaya | Internet Package A  | 7              |
+| PT Abadi      | Cloud Storage Pro   | 12             |
+| PT Maju Jaya  | Internet Package A  | 10             |
+| PT Maju Jaya  | Internet Package B  | 4              |
+| PT Sejahtera  | Cloud Storage Basic | 6              |
+| PT Sejahtera  | Internet Package B  | 5              |
+
+---
