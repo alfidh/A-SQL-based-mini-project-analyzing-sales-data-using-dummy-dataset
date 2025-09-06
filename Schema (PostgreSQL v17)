@@ -5,8 +5,7 @@
       product_name VARCHAR(50),
       category VARCHAR(20),
       product_cost DECIMAL(10,3),
-      price DECIMAL(10,3),
-      competitor_price DECIMAL(10,3)
+      price DECIMAL(10,3)
      );
        
      CREATE TABLE customers (
@@ -31,11 +30,11 @@
 
 **Query #1**
 
-    INSERT INTO products (product_name, category, product_cost, price, competitor_price) VALUES
-    ('Internet Package A', 'Telecom', 200000.000, 500000.000, 480000.000),
-    ('Internet Package B', 'Telecom', 250000.000, 580000.000, 550000.000),
-    ('Cloud Storage Basic', 'Digital Service', 100000.000, 250000.000,250000.000),
-    ('Cloud Storage Pro', 'Digital Service', 200000.000, 300000.000, 350000.000);
+    INSERT INTO products (product_name, category, product_cost, price) VALUES
+    ('Internet Package A', 'Telecom', 200000.000, 500000.000),
+    ('Internet Package B', 'Telecom', 250000.000, 580000.000),
+    ('Cloud Storage Basic', 'Digital Service', 100000.000, 250000.000),
+    ('Cloud Storage Pro', 'Digital Service', 200000.000, 300000.000);
 
 There are no results to be displayed.
 
@@ -47,12 +46,12 @@ There are no results to be displayed.
     
     SELECT * FROM products;
 
-| product_id | product_name        | category        | product_cost | price      | competitor_price |
-| ---------- | ------------------- | --------------- | ------------ | ---------- | ---------------- |
-| 1          | Internet Package A  | Telecom         | 200000.000   | 500000.000 | 480000.000       |
-| 2          | Internet Package B  | Telecom         | 250000.000   | 580000.000 | 550000.000       |
-| 3          | Cloud Storage Basic | Digital Service | 100000.000   | 250000.000 | 250000.000       |
-| 4          | Cloud Storage Pro   | Digital Service | 200000.000   | 300000.000 | 350000.000       |
+| product_id | product_name        | category        | product_cost | price      |
+| ---------- | ------------------- | --------------- | ------------ | ---------- |
+| 1          | Internet Package A  | Telecom         | 200000.000   | 500000.000 |
+| 2          | Internet Package B  | Telecom         | 250000.000   | 580000.000 |
+| 3          | Cloud Storage Basic | Digital Service | 100000.000   | 250000.000 |
+| 4          | Cloud Storage Pro   | Digital Service | 200000.000   | 300000.000 |
 
 ---
 **Query #3**
@@ -183,5 +182,26 @@ There are no results to be displayed.
 | PT Abadi      | 1200000.000  |
 
 ---
+**Query #10**
 
-[View on DB Fiddle](https://www.db-fiddle.com/f/a72dDW4AoQDTi3Knf3xuvL/1)
+    
+    
+    --Customer With >1 Order--
+    SELECT c.customer_name, COUNT(s.sales_id) AS num_order
+    FROM sales s
+    JOIN customers c ON c.customer_id = s.customer_id
+    GROUP BY c.customer_name
+    HAVING COUNT(s.sales_id) > 1
+    ORDER BY num_order DESC;
+
+| customer_name | num_order |
+| ------------- | --------- |
+| PT Maju Jaya  | 2         |
+| PT Sejahtera  | 2         |
+| CV Makmur     | 2         |
+| PT Abadi      | 2         |
+| CV Sinar Jaya | 2         |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/a72dDW4AoQDTi3Knf3xuvL/4)
