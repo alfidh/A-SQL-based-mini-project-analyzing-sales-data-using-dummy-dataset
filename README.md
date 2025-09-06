@@ -3,6 +3,8 @@ Designed and analyzed a dummy sales dataset to calculate revenue, profit, margin
 
 ## Description
 This mini project demonstrates the ability to design, manage, and analyze sales data using SQL. It uses a dummy dataset representing products, customers, and sales transactions. Analyses focus on generating actionable business insights, including revenue, profit, margin per product, and top customers.
+🔗 You can also read the full project documentation on Notion:
+https://www.notion.so/SQL-Mini-Project-1-Sales-Analysis-Using-Dummy-Data-265170cee06580fd9401cb23a486f3c4?source=copy_link
 
 ## Dataset / Tables
 1. **Products**  
