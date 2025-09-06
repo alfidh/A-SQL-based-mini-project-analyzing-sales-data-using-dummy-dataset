@@ -78,3 +78,11 @@ JOIN products p ON p.product_id = s.product_id
 GROUP BY c.customer_name
 ORDER BY total_profit DESC
 LIMIT 5;
+
+--Customer With >1 Order--
+SELECT c.customer_name, COUNT(s.sales_id) AS num_order
+FROM sales s
+JOIN customers c ON c.customer_id = s.customer_id
+GROUP BY c.customer_name
+HAVING COUNT(s.sales_id) > 1
+ORDER BY num_order DESC;
